@@ -22,5 +22,17 @@ public class MessageServiceTest {
 
         //Vérification que le texte du message retourné est correct.
         assertThat(message.getText()).isEqualTo("Hello World !");
-}
+    }
+    @Test
+    public void testSayHello() {
+        // Création de la variable qui va contenir le nom voulu
+        String name = "TomTom";
+
+        // Appel de la fonction avec la variable
+        MessageDto message = messageService.sayHello(name);
+
+        // Vérification du résultat
+        assertThat(message.getText()).isEqualTo("Hello TomTom !");
+    }
+    
 }
