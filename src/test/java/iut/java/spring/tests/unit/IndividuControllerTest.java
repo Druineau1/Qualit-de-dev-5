@@ -62,7 +62,7 @@ public class IndividuControllerTest {
 
     @Test
     public void testGetFound() throws Exception {
-        //ASSERT Définition de l'ID de l'individu à trouver et de l'individu
+        //ARRANGE Définition de l'ID de l'individu à trouver et de l'individu
         long idToFind = 1L;
         IndividuDto foundIndividuDto = new IndividuDto();
         foundIndividuDto.setId(idToFind);
@@ -82,5 +82,25 @@ public class IndividuControllerTest {
             .andExpect(jsonPath("$.id").value(foundIndividuDto.getId()))
             .andExpect(jsonPath("$.firstName").value(foundIndividuDto.getFirstName()))
             .andExpect(jsonPath("$.lastName").value(foundIndividuDto.getLastName()));
+    }
+    @Test
+    public void testGetNotFound() throws Exception {
+        // ARRANGE
+        long idToFind = 1L;
+        // Définition du comportement du mock pour retourner un Optional vide
+        when(individuServiceMock.get(idToFind)).thenReturn(Optional.empty());
+
+        // ACT
+        // Création d'un objet MockMvc pour simuler les requêtes HTTP
+        mockMvc = MockMvcBuilders.standaloneSetup(individuController).build();
+        
+        // Envoie d'une requête GET  et vérification du statut de la réponse
+        mockMvc.perform(get("/individu/{id}", idToFind))
+            .andExpect(status().isNotFound());
+
+        // Vérification que la méthode get a été appelée
+        verify(individuServiceMock).get(idToFind);
+        // Vérification qu'il n'y a pas d'autres interactions avec le mock du service
+        verifyNoMoreInteractions(individuServiceMock);
     }
 }
