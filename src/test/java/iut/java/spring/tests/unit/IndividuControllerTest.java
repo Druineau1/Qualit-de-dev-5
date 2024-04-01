@@ -85,16 +85,16 @@ public class IndividuControllerTest {
     }
     @Test
     public void testGetNotFound() throws Exception {
-        // ARRANGE
+        //ARRANGE
         long idToFind = 1L;
         // Définition du comportement du mock pour retourner un Optional vide
         when(individuServiceMock.get(idToFind)).thenReturn(Optional.empty());
 
-        // ACT
+        //ACT
         // Création d'un objet MockMvc pour simuler les requêtes HTTP
         mockMvc = MockMvcBuilders.standaloneSetup(individuController).build();
         
-        // Envoie d'une requête GET  et vérification du statut de la réponse
+        //ASSERT Envoie d'une requête GET  et vérification du statut de la réponse
         mockMvc.perform(get("/individu/{id}", idToFind))
             .andExpect(status().isNotFound());
 
