@@ -68,4 +68,17 @@ public class IndividuServiceTest {
         assertThat(individuDto.getHeight()).isEqualTo(180); // Vérifie la taille
         assertThat(individuDto.getBirthDate()).isEqualTo(LocalDate.of(1980, 1, 1)); // Vérifie la date de naissance
     }
+    
+    @Test
+    public void testGetNotFound() {
+        // Configuration du comportement du mock pour retourner un Optional vide
+        long idNotFound = 1L;
+        when(repositoryMock.findById(idNotFound)).thenReturn(Optional.empty());
+
+        // Appel de la méthode get de IndividuService avec l'ID spécifié
+        Optional<IndividuDto> result = service.get(idNotFound);
+
+        // Vérification que le résultat est vide
+        assertThat(result).isEmpty();
+    }
 }
