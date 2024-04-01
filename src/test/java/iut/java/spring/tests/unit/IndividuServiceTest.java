@@ -4,6 +4,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import iut.java.spring.dto.IndividuDto;
 import iut.java.spring.entity.Individu;
 import iut.java.spring.repository.IIndividuRepository;
 import iut.java.spring.service.impl.IndividuService;
@@ -38,5 +40,32 @@ public class IndividuServiceTest {
         // Vérification que l'individu a été supprimé
         verify(repositoryMock).deleteById(id);
         verifyNoMoreInteractions(repositoryMock);
+    }
+    
+    @Test
+    public void testGetFound() {
+        //Création d'un individu entier
+        long id = 1L;
+        Individu individu = new Individu();
+        individu.setId(id);
+        individu.setFirstName("John");
+        individu.setLastName("Doe");
+        individu.setTitle("Mr");
+        individu.setHeight(180);
+        individu.setBirthDate(LocalDate.of(1980, 1, 1));
+        when(repositoryMock.findById(id)).thenReturn(Optional.of(individu));
+
+        // ACT Obtention de l'optiponal
+        Optional<IndividuDto> result = service.get(id);
+
+        // ASSERT
+        assertThat(result).isPresent(); // Vérifie si l'optionnal contient une valeur
+        IndividuDto individuDto = result.get(); // Obtient la valeur de l'optionnal
+        assertThat(individuDto.getId()).isEqualTo(id); // Vérifie l'ID
+        assertThat(individuDto.getFirstName()).isEqualTo("John"); // Vérifie le prénom
+        assertThat(individuDto.getLastName()).isEqualTo("Doe"); // Vérifie le nom de famille
+        assertThat(individuDto.getTitle()).isEqualTo("Mr"); // Vérifie le titre
+        assertThat(individuDto.getHeight()).isEqualTo(180); // Vérifie la taille
+        assertThat(individuDto.getBirthDate()).isEqualTo(LocalDate.of(1980, 1, 1)); // Vérifie la date de naissance
     }
 }
