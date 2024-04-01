@@ -78,7 +78,9 @@ public class IndividuServiceTest {
         // Appel de la méthode get de IndividuService avec l'ID spécifié
         Optional<IndividuDto> result = service.get(idNotFound);
 
-        // Vérification que le résultat est vide
+        // Vérification que le résultat est vide et q'il n'y ait aucune autre interactions avec le mock
         assertThat(result).isEmpty();
+        verify(repositoryMock).findById(idNotFound);
+        verifyNoMoreInteractions(repositoryMock);
     }
 }
