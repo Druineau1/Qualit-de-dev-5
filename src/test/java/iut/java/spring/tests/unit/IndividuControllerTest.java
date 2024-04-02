@@ -45,8 +45,6 @@ public class IndividuControllerTest {
     	// ID de l'individu à supprimer et définition du comportement du mock 
         long idToRemove = 1L;
         doNothing().when(individuServiceMock).remove(idToRemove);
-
-        // Création d'un objet MockMvc pour simuler les requêtes HTTP
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(individuController).build();
         
         //ASSERT
