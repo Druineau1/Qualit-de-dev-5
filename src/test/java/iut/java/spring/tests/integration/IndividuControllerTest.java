@@ -46,5 +46,39 @@ public class IndividuControllerTest {
         verify(repositoryMock).deleteById(idToRemove);
         verifyNoMoreInteractions(repositoryMock);
     }
+    @Test
+    public void testGetFound() {
+        // ARRANGE
+        long idToGet = 1L;
+        String uri = "/individu/{id}";
+
+        // Création de l'individu fictif
+        Individu individu = new Individu();
+        individu.setId(idToGet);
+        individu.setFirstName("John");
+        individu.setLastName("Doe");
+        individu.setTitle("Mr");
+        individu.setHeight(180);
+        individu.setBirthDate(LocalDate.of(1980, 5, 15));
+
+        // Simulation du comportement du mock lorsque l'entité est trouvée dans la base de données
+        when(repositoryMock.findById(idToGet)).thenReturn(Optional.of(individu));
+
+        // ACT
+        Individu response = client.get().uri(uri, idToGet)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(Individu.class)
+                .returnResult().getResponseBody();
+
+        // ASSERT
+        assertThat(response).isNotNull();
+        assertThat(response.getId()).isEqualTo(idToGet);
+        assertThat(response.getFirstName()).isEqualTo("John");
+        assertThat(response.getLastName()).isEqualTo("Doe");
+        assertThat(response.getTitle()).isEqualTo("Mr");
+        assertThat(response.getHeight()).isEqualTo(180);
+        assertThat(response.getBirthDate()).isEqualTo(LocalDate.of(1980, 5, 15));
+        }
 
 }
