@@ -50,7 +50,7 @@ public class IndividuControllerTest {
     public void testGetFound() {
         // ARRANGE
         long idToGet = 1L;
-        String uri = "/individu/{id}";
+        String path = "/individu/{id}";
 
         // Création de l'individu fictif
         Individu individu = new Individu();
@@ -65,7 +65,7 @@ public class IndividuControllerTest {
         when(repositoryMock.findById(idToGet)).thenReturn(Optional.of(individu));
 
         // ACT
-        Individu response = client.get().uri(uri, idToGet)
+        Individu response = client.get().uri(path, idToGet)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Individu.class)
@@ -80,5 +80,24 @@ public class IndividuControllerTest {
         assertThat(response.getHeight()).isEqualTo(180);
         assertThat(response.getBirthDate()).isEqualTo(LocalDate.of(1980, 5, 15));
         }
+    @Test
+    public void testGetNotFound() {
+    	//ARRANGE
+        long idToNotGet = 1L;
+        String path = "/individu/{id}";
+        
+        when(repositoryMock.findById(idToNotGet)).thenReturn(Optional.empty());
+        
+        //ACT Envoie de la requête pour récupérer l'id
+        Individu response = client.get().uri(path, idToNotGet)
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(Individu.class)
+                .returnResult().getResponseBody();
+        
+        //ASSERT Vérification findById a été appelé et qu'il n'y a pas d'autre interaction
+        verify(repositoryMock).findById(idToNotGet);
+        verifyNoMoreInteractions(repositoryMock);
+    }
 
 }
