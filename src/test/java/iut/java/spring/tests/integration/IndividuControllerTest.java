@@ -64,14 +64,14 @@ public class IndividuControllerTest {
         // Simulation du comportement du mock lorsque l'entité est trouvée dans la base de données
         when(repositoryMock.findById(idToGet)).thenReturn(Optional.of(individu));
 
-        // ACT
+        //ACT Requête http
         Individu response = client.get().uri(path, idToGet)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(Individu.class)
                 .returnResult().getResponseBody();
 
-        // ASSERT
+        //ASSERT Vérification de tous les champs d'ue l'individu
         assertThat(response).isNotNull();
         assertThat(response.getId()).isEqualTo(idToGet);
         assertThat(response.getFirstName()).isEqualTo("John");
@@ -82,7 +82,7 @@ public class IndividuControllerTest {
         }
     @Test
     public void testGetNotFound() {
-    	//ARRANGE
+    	//ARRANGE Définition d'un id et d'un chemein pour la requête
         long idToNotGet = 1L;
         String path = "/individu/{id}";
         

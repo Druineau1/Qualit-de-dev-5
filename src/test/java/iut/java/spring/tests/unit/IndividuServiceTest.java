@@ -58,15 +58,15 @@ public class IndividuServiceTest {
         // ACT Obtention de l'optiponal
         Optional<IndividuDto> result = service.get(id);
 
-        // ASSERT
-        assertThat(result).isPresent(); // Vérifie si l'optionnal contient une valeur
-        IndividuDto individuDto = result.get(); // Obtient la valeur de l'optionnal
-        assertThat(individuDto.getId()).isEqualTo(id); // Vérifie l'ID
-        assertThat(individuDto.getFirstName()).isEqualTo("John"); // Vérifie le prénom
-        assertThat(individuDto.getLastName()).isEqualTo("Doe"); // Vérifie le nom de famille
-        assertThat(individuDto.getTitle()).isEqualTo("Mr"); // Vérifie le titre
-        assertThat(individuDto.getHeight()).isEqualTo(180); // Vérifie la taille
-        assertThat(individuDto.getBirthDate()).isEqualTo(LocalDate.of(1980, 1, 1)); // Vérifie la date de naissance
+        //ASSERT Vérification des champs de l'individu
+        assertThat(result).isPresent();
+        IndividuDto individuDto = result.get(); 
+        assertThat(individuDto.getId()).isEqualTo(id); 
+        assertThat(individuDto.getFirstName()).isEqualTo("John"); 
+        assertThat(individuDto.getLastName()).isEqualTo("Doe"); 
+        assertThat(individuDto.getTitle()).isEqualTo("Mr"); 
+        assertThat(individuDto.getHeight()).isEqualTo(180); 
+        assertThat(individuDto.getBirthDate()).isEqualTo(LocalDate.of(1980, 1, 1)); 
     }
     
     @Test
